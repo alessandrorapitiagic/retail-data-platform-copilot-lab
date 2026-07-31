@@ -23,7 +23,9 @@ def copy_table(src,dw,source,target,run_id):
     cols=[d.name for d in src.execute(f'SELECT * FROM {source} LIMIT 0').description]
     dw.execute(f'TRUNCATE {target}')
     placeholders=','.join(['%s']*(len(cols)+2))
-    dw.executemany(f"INSERT INTO {target} ({','.join(cols)},_ingested_at,_run_id) VALUES ({placeholders})", [tuple(r)+(datetime.now(timezone.utc),run_id) for r in rows])
+    # psycopg3: Connection non espone executemany, serve un cursore esplicito.
+    with dw.cursor() as cur:
+        cur.executemany(f"INSERT INTO {target} ({','.join(cols)},_ingested_at,_run_id) VALUES ({placeholders})", [tuple(r)+(datetime.now(timezone.utc),run_id) for r in rows])
     return len(rows)
 
 def check_sales_reconciliation(src,dw,run_id):
@@ -56,7 +58,8 @@ def main():
       dw.execute('TRUNCATE bronze.budget')
       with budget_path.open() as f:
         rows=list(csv.DictReader(f))
-      dw.executemany("INSERT INTO bronze.budget(year,month,scenario,store_code,category_code,budget_amount,_ingested_at,_run_id) VALUES(%s,%s,%s,%s,%s,%s,now(),%s)",[(r['year'],r['month'],r['scenario'],r['store_code'],r['category_code'],r['budget_amount'],run_id) for r in rows])
+      with dw.cursor() as cur:
+        cur.executemany("INSERT INTO bronze.budget(year,month,scenario,store_code,category_code,budget_amount,_ingested_at,_run_id) VALUES(%s,%s,%s,%s,%s,%s,now(),%s)",[(r['year'],r['month'],r['scenario'],r['store_code'],r['category_code'],r['budget_amount'],run_id) for r in rows])
       for sql_file in ['04-data-platform/sql/transform/20_silver.sql','04-data-platform/sql/transform/30_gold.sql']:
         dw.execute((Path(__file__).parents[1]/sql_file).read_text())
       check_sales_reconciliation(src,dw,run_id)

@@ -5,8 +5,10 @@ SRC=f"host={os.getenv('SOURCE_DB_HOST','localhost')} port={os.getenv('SOURCE_DB_
 DW=f"host={os.getenv('DW_DB_HOST','localhost')} port={os.getenv('DW_DB_PORT','5434')} dbname={os.getenv('DW_DB_NAME','retail_dw')} user={os.getenv('DB_USER','lab_user')} password={os.getenv('DB_PASSWORD','lab_password')}"
 def test_sales_reconciliation():
   with psycopg.connect(SRC) as s, psycopg.connect(DW) as d:
-    source=s.execute("select sum(l.quantity*l.unit_price-case when l.quantity<0 then -abs(l.discount_amount) else abs(l.discount_amount) end) from erp.sales_order_line l join erp.sales_order o using(order_id) join erp.product p on p.product_id=l.product_id where o.status in ('COMPLETED','RETURNED') and p.category_code is not null").fetchone()[0]
-    gold=d.execute('select sum(net_amount) from gold.fact_sales').fetchone()[0]
+    source=float(s.execute("select sum(l.quantity*l.unit_price-case when l.quantity<0 then -abs(l.discount_amount) else abs(l.discount_amount) end) from erp.sales_order_line l join erp.sales_order o using(order_id) join erp.product p on p.product_id=l.product_id where o.status in ('COMPLETED','RETURNED') and p.category_code is not null").fetchone()[0])
+    gold=float(d.execute('select sum(net_amount) from gold.fact_sales').fetchone()[0])
+    # Postgres restituisce numeric come Decimal: va convertito a float prima di combinarlo con costanti float (0.001),
+    # altrimenti Python solleva TypeError su Decimal * float.
     assert abs(source-gold) <= max(abs(source)*0.001,0.01)
 
 def test_ecommerce_reconciliation():
