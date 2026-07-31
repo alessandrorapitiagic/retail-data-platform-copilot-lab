@@ -12,8 +12,8 @@ table 'Dim Channel'
 	partition 'Dim Channel' = m
 		mode: import
 		source =
-				let
-					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
-					gold_dim_channel = Source{[Schema="gold",Item="dim_channel"]}[Data]
-				in
-					gold_dim_channel
+			let
+				Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+				gold_dim_channel = Source{[Schema="gold",Item="dim_channel"]}[Data]
+			in
+				gold_dim_channel

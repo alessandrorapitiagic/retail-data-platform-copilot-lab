@@ -55,8 +55,8 @@ table 'Fact Sales'
 	partition 'Fact Sales' = m
 		mode: import
 		source =
-				let
-					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
-					gold_fact_sales = Source{[Schema="gold",Item="fact_sales"]}[Data]
-				in
-					gold_fact_sales
+			let
+				Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+				gold_fact_sales = Source{[Schema="gold",Item="fact_sales"]}[Data]
+			in
+				gold_fact_sales

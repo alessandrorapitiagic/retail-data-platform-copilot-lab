@@ -21,8 +21,8 @@ table 'Dim Product'
 	partition 'Dim Product' = m
 		mode: import
 		source =
-				let
-					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
-					gold_dim_product = Source{[Schema="gold",Item="dim_product"]}[Data]
-				in
-					gold_dim_product
+			let
+				Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+				gold_dim_product = Source{[Schema="gold",Item="dim_product"]}[Data]
+			in
+				gold_dim_product

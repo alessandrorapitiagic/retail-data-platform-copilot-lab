@@ -18,8 +18,8 @@ table SecurityUserStore
 	partition SecurityUserStore = m
 		mode: import
 		source =
-				let
-					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
-					gold_security_user_store = Source{[Schema="gold",Item="security_user_store"]}[Data]
-				in
-					gold_security_user_store
+			let
+				Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+				gold_security_user_store = Source{[Schema="gold",Item="security_user_store"]}[Data]
+			in
+				gold_security_user_store

@@ -19,8 +19,8 @@ table 'Fact Budget'
 	partition 'Fact Budget' = m
 		mode: import
 		source =
-				let
-					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
-					gold_fact_budget = Source{[Schema="gold",Item="fact_budget"]}[Data]
-				in
-					gold_fact_budget
+			let
+				Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+				gold_fact_budget = Source{[Schema="gold",Item="fact_budget"]}[Data]
+			in
+				gold_fact_budget

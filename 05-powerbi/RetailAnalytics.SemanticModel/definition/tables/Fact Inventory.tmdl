@@ -17,8 +17,8 @@ table 'Fact Inventory'
 	partition 'Fact Inventory' = m
 		mode: import
 		source =
-				let
-					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
-					gold_fact_inventory = Source{[Schema="gold",Item="fact_inventory"]}[Data]
-				in
-					gold_fact_inventory
+			let
+				Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+				gold_fact_inventory = Source{[Schema="gold",Item="fact_inventory"]}[Data]
+			in
+				gold_fact_inventory

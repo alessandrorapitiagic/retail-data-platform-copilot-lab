@@ -21,8 +21,8 @@ table 'Dim Date'
 	partition 'Dim Date' = m
 		mode: import
 		source =
-				let
-					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
-					gold_dim_date = Source{[Schema="gold",Item="dim_date"]}[Data]
-				in
-					gold_dim_date
+			let
+				Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+				gold_dim_date = Source{[Schema="gold",Item="dim_date"]}[Data]
+			in
+				gold_dim_date
