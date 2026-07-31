@@ -1,0 +1,2 @@
+expression PostgreSQL_Server = "localhost:5434" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression PostgreSQL_Database = "retail_dw" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]

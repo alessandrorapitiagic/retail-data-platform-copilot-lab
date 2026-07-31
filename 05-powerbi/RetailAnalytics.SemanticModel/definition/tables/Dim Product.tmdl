@@ -1,0 +1,28 @@
+table 'Dim Product'
+	column product_key
+		dataType: int64
+		summarizeBy: none
+	column sku
+		dataType: string
+		summarizeBy: none
+	column product_name
+		dataType: string
+		summarizeBy: none
+	column category_code
+		dataType: string
+		summarizeBy: none
+	column category_name
+		dataType: string
+		summarizeBy: none
+	column brand
+		dataType: string
+		summarizeBy: none
+
+	partition 'Dim Product' = m
+		mode: import
+		source =
+				let
+					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+					gold_dim_product = Source{[Schema="gold",Item="dim_product"]}[Data]
+				in
+					gold_dim_product

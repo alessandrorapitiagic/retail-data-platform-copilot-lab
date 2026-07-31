@@ -1,0 +1,14 @@
+{
+  "servers": {
+    "postgres-source": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://lab_user:lab_password@localhost:5433/retail_source"]
+    },
+    "postgres-dw": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://lab_user:lab_password@localhost:5434/retail_dw"]
+    }
+  }
+}

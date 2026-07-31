@@ -1,0 +1,26 @@
+table 'Fact Budget'
+	measure Budget = SUM('Fact Budget'[budget_amount])
+		formatString: € #,0.00
+	measure 'Budget Variance' = [Net Sales]-[Budget]
+		formatString: € #,0.00
+	measure 'Budget Variance %' = DIVIDE([Budget Variance],[Budget])
+		formatString: 0.0%
+	column date_key
+		dataType: int64
+	column store_key
+		dataType: int64
+	column category_code
+		dataType: string
+	column scenario
+		dataType: string
+	column budget_amount
+		dataType: decimal
+
+	partition 'Fact Budget' = m
+		mode: import
+		source =
+				let
+					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+					gold_fact_budget = Source{[Schema="gold",Item="fact_budget"]}[Data]
+				in
+					gold_fact_budget

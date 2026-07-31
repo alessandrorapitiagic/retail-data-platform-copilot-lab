@@ -1,0 +1,31 @@
+table 'Dim Customer'
+	column customer_key
+		dataType: int64
+		summarizeBy: none
+	column customer_code
+		dataType: string
+		summarizeBy: none
+	column full_name
+		dataType: string
+		summarizeBy: none
+	column segment
+		dataType: string
+		summarizeBy: none
+	column city
+		dataType: string
+		summarizeBy: none
+	column region
+		dataType: string
+		summarizeBy: none
+	column consent_marketing
+		dataType: boolean
+		summarizeBy: none
+
+	partition 'Dim Customer' = m
+		mode: import
+		source =
+				let
+					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+					gold_dim_customer = Source{[Schema="gold",Item="dim_customer"]}[Data]
+				in
+					gold_dim_customer

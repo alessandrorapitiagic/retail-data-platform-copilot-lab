@@ -1,0 +1,55 @@
+services:
+  source-db:
+    image: postgres:16
+    container_name: retail-source-db
+    environment:
+      POSTGRES_DB: retail_source
+      POSTGRES_USER: lab_user
+      POSTGRES_PASSWORD: lab_password
+    ports: ["5433:5432"]
+    volumes:
+      - ./03-source-system/sql:/docker-entrypoint-initdb.d
+      - source-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab_user -d retail_source"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+  dw-db:
+    image: postgres:16
+    container_name: retail-dw-db
+    environment:
+      POSTGRES_DB: retail_dw
+      POSTGRES_USER: lab_user
+      POSTGRES_PASSWORD: lab_password
+    ports: ["5434:5432"]
+    volumes:
+      - ./04-data-platform/sql/init:/docker-entrypoint-initdb.d
+      - dw-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab_user -d retail_dw"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: retail-pgadmin
+    profiles: ["tools"]
+    depends_on:
+      source-db:
+        condition: service_healthy
+      dw-db:
+        condition: service_healthy
+    environment:
+      PGADMIN_DEFAULT_EMAIL: demo@retailone-demo.local
+      PGADMIN_DEFAULT_PASSWORD: lab_password
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports: ["8081:80"]
+    volumes:
+      - ./03-source-system/pgadmin-servers.json:/pgadmin4/servers.json:ro
+
+volumes:
+  source-db-data:
+  dw-db-data:

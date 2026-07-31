@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "artifacts": [
+    {
+      "report": {
+        "path": "RetailAnalytics.Report"
+      }
+    },
+    {
+      "semanticModel": {
+        "path": "RetailAnalytics.SemanticModel"
+      }
+    }
+  ],
+  "settings": {
+    "enableAutoRecovery": true
+  }
+}

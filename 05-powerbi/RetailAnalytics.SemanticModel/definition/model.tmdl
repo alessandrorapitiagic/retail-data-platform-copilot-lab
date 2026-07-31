@@ -1,0 +1,18 @@
+model Model
+culture: it-IT
+defaultPowerBIDataSourceVersion: powerBI_V3
+sourceQueryCulture: it-IT
+
+ref table 'Dim Date'
+ref table 'Dim Store'
+ref table 'Dim Product'
+ref table 'Dim Customer'
+ref table 'Dim Channel'
+ref table 'Fact Sales'
+ref table 'Fact Inventory'
+ref table 'Fact Budget'
+ref table SecurityUserStore
+
+ref role Executive
+ref role 'Area Manager'
+ref role 'Store Manager'

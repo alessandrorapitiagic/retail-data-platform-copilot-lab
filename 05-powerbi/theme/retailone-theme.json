@@ -1,0 +1,13 @@
+{
+  "name": "RetailOne Corporate",
+  "dataColors": [
+    "#1F4E79",
+    "#70AD47",
+    "#ED7D31",
+    "#A5A5A5",
+    "#FFC000"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#1F2937",
+  "tableAccent": "#1F4E79"
+}

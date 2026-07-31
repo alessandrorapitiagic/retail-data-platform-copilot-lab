@@ -1,0 +1,24 @@
+table 'Fact Inventory'
+	measure 'Stock Qty' = SUM('Fact Inventory'[on_hand_qty])
+	measure 'Available Qty' = SUM('Fact Inventory'[available_qty])
+	column date_key
+		dataType: int64
+	column store_key
+		dataType: int64
+	column product_key
+		dataType: int64
+	column on_hand_qty
+		dataType: decimal
+	column reserved_qty
+		dataType: decimal
+	column available_qty
+		dataType: decimal
+
+	partition 'Fact Inventory' = m
+		mode: import
+		source =
+				let
+					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+					gold_fact_inventory = Source{[Schema="gold",Item="fact_inventory"]}[Data]
+				in
+					gold_fact_inventory

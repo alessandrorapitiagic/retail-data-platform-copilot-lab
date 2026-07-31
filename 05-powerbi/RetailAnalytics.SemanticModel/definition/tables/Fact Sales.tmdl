@@ -1,0 +1,62 @@
+table 'Fact Sales'
+	measure 'Net Sales' = SUM('Fact Sales'[net_amount])
+		formatString: € #,0.00
+	measure 'Gross Sales' = SUM('Fact Sales'[gross_amount])
+		formatString: € #,0.00
+	measure 'Gross Margin' = SUM('Fact Sales'[margin_amount])
+		formatString: € #,0.00
+	measure 'Gross Margin %' = DIVIDE([Gross Margin],[Net Sales])
+		formatString: 0.0%
+	measure Units = SUM('Fact Sales'[quantity])
+	measure Orders = DISTINCTCOUNT('Fact Sales'[order_id])
+	measure 'Average Ticket' = DIVIDE([Net Sales],[Orders])
+		formatString: € #,0.00
+	measure 'Active Customers' = DISTINCTCOUNT('Fact Sales'[customer_key])
+
+	column order_line_id
+		dataType: int64
+		summarizeBy: none
+	column order_id
+		dataType: int64
+		summarizeBy: none
+	column document_number
+		dataType: string
+		summarizeBy: none
+	column date_key
+		dataType: int64
+		summarizeBy: none
+	column store_key
+		dataType: int64
+		summarizeBy: none
+	column product_key
+		dataType: int64
+		summarizeBy: none
+	column customer_key
+		dataType: int64
+		summarizeBy: none
+	column channel_key
+		dataType: int64
+		summarizeBy: none
+	column quantity
+		dataType: decimal
+	column gross_amount
+		dataType: decimal
+		summarizeBy: none
+	column discount_amount
+		dataType: decimal
+		summarizeBy: none
+	column net_amount
+		dataType: decimal
+	column cost_amount
+		dataType: decimal
+	column margin_amount
+		dataType: decimal
+
+	partition 'Fact Sales' = m
+		mode: import
+		source =
+				let
+					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+					gold_fact_sales = Source{[Schema="gold",Item="fact_sales"]}[Data]
+				in
+					gold_fact_sales

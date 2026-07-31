@@ -1,0 +1,9 @@
+name: Feature
+description: Nuova funzionalità Data/BI
+body:
+  - type: textarea
+    attributes: {label: Business need}
+  - type: textarea
+    attributes: {label: Acceptance criteria}
+  - type: textarea
+    attributes: {label: Data sources}

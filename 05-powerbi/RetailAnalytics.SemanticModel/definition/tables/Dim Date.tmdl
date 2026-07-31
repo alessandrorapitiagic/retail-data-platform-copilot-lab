@@ -1,0 +1,28 @@
+table 'Dim Date'
+	lineageTag: 11111111-1111-1111-1111-111111111111
+
+	column date_key
+		dataType: int64
+		summarizeBy: none
+
+	column full_date
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+
+	column year
+		dataType: int64
+		summarizeBy: none
+
+	column year_month
+		dataType: string
+		summarizeBy: none
+
+	partition 'Dim Date' = m
+		mode: import
+		source =
+				let
+					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+					gold_dim_date = Source{[Schema="gold",Item="dim_date"]}[Data]
+				in
+					gold_dim_date

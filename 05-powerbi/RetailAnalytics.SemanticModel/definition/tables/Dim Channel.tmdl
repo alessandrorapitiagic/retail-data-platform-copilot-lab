@@ -1,0 +1,19 @@
+table 'Dim Channel'
+	column channel_key
+		dataType: int64
+		summarizeBy: none
+	column channel_code
+		dataType: string
+		summarizeBy: none
+	column channel_name
+		dataType: string
+		summarizeBy: none
+
+	partition 'Dim Channel' = m
+		mode: import
+		source =
+				let
+					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+					gold_dim_channel = Source{[Schema="gold",Item="dim_channel"]}[Data]
+				in
+					gold_dim_channel

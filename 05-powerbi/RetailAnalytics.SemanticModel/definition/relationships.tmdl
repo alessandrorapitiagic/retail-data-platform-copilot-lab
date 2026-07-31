@@ -1,0 +1,30 @@
+relationship rel_sales_date
+	fromColumn: 'Fact Sales'.date_key
+	toColumn: 'Dim Date'.date_key
+relationship rel_sales_store
+	fromColumn: 'Fact Sales'.store_key
+	toColumn: 'Dim Store'.store_key
+relationship rel_sales_product
+	fromColumn: 'Fact Sales'.product_key
+	toColumn: 'Dim Product'.product_key
+relationship rel_sales_customer
+	fromColumn: 'Fact Sales'.customer_key
+	toColumn: 'Dim Customer'.customer_key
+relationship rel_sales_channel
+	fromColumn: 'Fact Sales'.channel_key
+	toColumn: 'Dim Channel'.channel_key
+relationship rel_inventory_date
+	fromColumn: 'Fact Inventory'.date_key
+	toColumn: 'Dim Date'.date_key
+relationship rel_inventory_store
+	fromColumn: 'Fact Inventory'.store_key
+	toColumn: 'Dim Store'.store_key
+relationship rel_inventory_product
+	fromColumn: 'Fact Inventory'.product_key
+	toColumn: 'Dim Product'.product_key
+relationship rel_budget_date
+	fromColumn: 'Fact Budget'.date_key
+	toColumn: 'Dim Date'.date_key
+relationship rel_budget_store
+	fromColumn: 'Fact Budget'.store_key
+	toColumn: 'Dim Store'.store_key

@@ -1,0 +1,9 @@
+name: Data Quality Issue
+description: Anomalia di qualità dati
+body:
+  - type: input
+    attributes: {label: Rule code}
+  - type: textarea
+    attributes: {label: Evidence}
+  - type: dropdown
+    attributes: {label: Severity, options: [Warning, Error, Critical]}

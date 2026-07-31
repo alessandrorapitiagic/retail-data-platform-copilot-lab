@@ -1,0 +1,3 @@
+role 'Area Manager'
+	modelPermission: read
+	permission 'Dim Store' = [region] = LOOKUPVALUE(SecurityUserStore[region],SecurityUserStore[user_email],USERPRINCIPALNAME())

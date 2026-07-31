@@ -1,0 +1,25 @@
+table SecurityUserStore
+	isHidden
+	lineageTag: 22222222-2222-2222-2222-222222222222
+
+	column user_email
+		dataType: string
+		summarizeBy: none
+	column role_code
+		dataType: string
+		summarizeBy: none
+	column store_code
+		dataType: string
+		summarizeBy: none
+	column region
+		dataType: string
+		summarizeBy: none
+
+	partition SecurityUserStore = m
+		mode: import
+		source =
+				let
+					Source = PostgreSQL.Database(PostgreSQL_Server, PostgreSQL_Database),
+					gold_security_user_store = Source{[Schema="gold",Item="security_user_store"]}[Data]
+				in
+					gold_security_user_store
